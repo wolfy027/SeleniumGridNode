@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group = 'selenium.starter'
+version = '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium-api:3.141.59'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    implementation 'org.seleniumhq.selenium:selenium-server:3.141.59'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src/main/java/files', 'src/main/java/version', 'src/main/java']
+            include 'log4j.properties'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'NodeLauncher'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveFileName = 'SELENIUM_NODE_CONNECTOR.jar'
+}
